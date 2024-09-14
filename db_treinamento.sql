@@ -33,6 +33,21 @@ CREATE TABLE Funcionarios (
  Nome VARCHAR(100) NOT NULL,
  Departamento VARCHAR(100) NOT NULL
 );
+-- Tabela de Pagamentos
+CREATE TABLE Pagamentos (
+    Id_Pagamento INT PRIMARY KEY AUTO_INCREMENT,
+    Id_Pedido INT,
+    Data_Pagamento DATE NOT NULL,
+    Valor DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY(Id_Pedido) REFERENCES Pedidos(Id_Pedido)
+);
+-- Tabela de Despesas
+CREATE TABLE Despesas (
+    Id_Despesa INT PRIMARY KEY AUTO_INCREMENT,
+    Categoria VARCHAR(100) NOT NULL,
+    Valor DECIMAL(10,2) NOT NULL,
+    Data DATE NOT NULL
+);
 
 --  -------------------------TABELAS-----------------------------------
 
@@ -100,3 +115,20 @@ FROM Produtos
 GROUP BY Fornecedor
 ORDER BY Total_Por_Fornecedor;
 
+-- 9 Agrupe os pagamentos por ano e calcule o total de pagamentos recebidos em cada ano.
+
+SELECT YEAR(Data_Pagamento) AS Ano, SUM(Valor) AS Total_Pagamentos
+FROM  Pagamentos
+GROUP BY YEAR(Data_Pagamento)
+ORDER BY  Ano;
+
+-- 10 Agrupe as despesas por categoria e calcule o total gasto em cada categoria.
+
+SELECT Categoria, SUM(Valor) AS Total_Gasto
+FROM Despesas
+GROUP BY Categoria
+ORDER BY Total_Gasto DESC;
+
+--  ---------------------------- SUM ----------------------------------
+
+--  ---------------------------- Subquery -----------------------------
