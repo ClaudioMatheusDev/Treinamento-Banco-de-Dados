@@ -16,6 +16,7 @@ CREATE TABLE Produtos (
     Id_Produto INT PRIMARY KEY AUTO_INCREMENT,
     Nome VARCHAR(100) NOT NULL,
     Categoria VARCHAR(100) NOT NULL,
+    Preco DECIMAL(10, 2) NOT NULL,
     Fornecedor VARCHAR(100) NOT NULL
 );
 -- Tabela de Pedidos
@@ -31,6 +32,7 @@ CREATE TABLE Pedidos (
 CREATE TABLE Funcionarios (
  Id_Funcionario INT PRIMARY KEY AUTO_INCREMENT,	
  Nome VARCHAR(100) NOT NULL,
+ Salario DECIMAL(10,2) NOT NULL,
  Departamento VARCHAR(100) NOT NULL
 );
 -- Tabela de Pagamentos
@@ -132,3 +134,44 @@ ORDER BY Total_Gasto DESC;
 --  ---------------------------- SUM ----------------------------------
 
 --  ---------------------------- Subquery -----------------------------
+
+-- 11 Exiba os produtos cujo preço é superior à média dos preços de todos os produtos.
+
+SELECT  * 
+FROM Produtos 
+WHERE Preco > (SELECT AVG (Preco) FROM Produtos);
+
+-- 12 Liste os funcionários que ganham acima da média salarial do departamento ao qual pertencem.
+
+SELECT * 
+FROM Funcionarios 
+WHERE Salario > (SELECT AVG (SALARIO) FROM Departamento);
+
+-- 13 Retorne os clientes que realizaram mais de 5 pedidos.
+
+SELECT Id_Cliente, COUNT(Id_Pedido) AS Total_Pedidos
+FROM Pedidos
+GROUP BY Id_Cliente
+HAVING COUNT(Id_Pedido) > 5;
+
+-- 14 Exiba as vendas cujo valor total seja maior que a média das vendas realizadas no mês anterior.
+
+SELECT Id_Pedido, Valor
+FROM Pedidos
+WHERE Valor > (
+    SELECT AVG(Valor)
+    FROM Pedidos
+    WHERE MONTH(Data) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+    AND YEAR(Data) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
+);
+
+-- 15 Liste os produtos que pertencem à mesma categoria do produto mais caro.
+
+WITH ProdutoMaisCaro AS (
+    SELECT Categoria
+    FROM Produtos
+    WHERE Preco = (SELECT MAX(Preco) FROM Produtos)
+)
+SELECT Id_Produto, Nome, Categoria, Preco
+FROM Produtos
+WHERE Categoria = (SELECT Categoria FROM ProdutoMaisCaro);
