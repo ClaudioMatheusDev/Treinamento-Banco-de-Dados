@@ -10,6 +10,7 @@ CREATE TABLE Cliente (
     Nome VARCHAR(100) NOT NULL,
     Cidade VARCHAR(255) NOT NULL,
     Pais VARCHAR(255) NOT NULL,
+    Idade INT NOT NULL,  
     Telefone VARCHAR(20) NOT NULL
 );
 -- Tabela de Produtos
@@ -23,9 +24,11 @@ CREATE TABLE Produtos (
 -- Tabela de Pedidos
 CREATE TABLE Pedidos (
   Id_Pedido INT PRIMARY KEY AUTO_INCREMENT,
-  Data DATE NOY NULL,
+  Data DATE NOT NULL,
   Regiao VARCHAR(100) NOT NULL,	
-  Valor DECIMAL(10,2) NOT NULL
+  Valor DECIMAL(10,2) NOT NULL,
+  Status VARCHAR(100) NOT NULL,
+  Quantidade INT NOT NULL,
   Id_Cliente INT,
   FOREIGN KEY(Id_Cliente) REFERENCES Clientes(Id_Cliente)
 );
@@ -35,6 +38,7 @@ CREATE TABLE Funcionarios (
  Nome VARCHAR(100) NOT NULL,
  Salario DECIMAL(10,2) NOT NULL,
  Cargo Varchar(100) NOT NULL,
+ Regiao VARCHAR(100) NOT NULL,
  Departamento VARCHAR(100) NOT NULL
 );
 -- Tabela de Pagamentos
@@ -178,6 +182,10 @@ SELECT Id_Produto, Nome, Categoria, Preco
 FROM Produtos
 WHERE Categoria = (SELECT Categoria FROM ProdutoMaisCaro);
 
+--  ---------------------------- Subquery -----------------------------
+
+--  ------------------------- Having Count -----------------------------
+
 -- 16 Agrupe os clientes por país e exiba apenas os países que possuem mais de 100 clientes.
 
 SELECT Pais, COUNT(*) AS NumeroClientes
@@ -191,6 +199,119 @@ SELECT Cargo, COUNT(*) AS FuncionarioPorCargo
 From Funcionario
 GROUP BY Cargo
 HAVING COUNT(*) > 5;
+
+--18 Agrupe os fornecedores por região e exiba apenas as regiões que possuem mais de 10 fornecedores.
+
+SELECT Fornecedor, COUNT(*) AS TotalFornecedores
+FROM Produtos
+GROUP BY Fornecedor
+HAVING COUNT(*) > 10;
+
+--19 Agrupe os pedidos por status e exiba apenas os status que possuem mais de 50 pedidos.
+
+SELECT Status, COUNT(*) AS TotalPedidos
+FROM Pedidos
+GROUP BY Status
+HAVING COUNT(*) > 50;
+
+--20 Agrupe os clientes por idade e exiba apenas as faixas etárias que possuem mais de 20 clientes.
+
+SELECT Idade, COUNT(*) AS ClientesPorIdade
+FROM Cliente
+GROUP BY Idade
+HAVING COUNT(*) > 20;
+
+--  ------------------------- Having Count -----------------------------
+
+--  ----------------------------- Max ----------------------------------
+-- 21 Encontre o maior salário por departamento.
+
+SELECT Departamento, MAX(Salario) AS MaiorSalario
+FROM Funcionarios
+GROUP BY Departamento;
+
+-- 22 Descubra o maior valor de venda por cliente.
+
+SELECT Id_Cliente, MAX(Valor) AS MaiorValor
+FROM Pedidos
+GROUP BY Id_Cliente;
+
+-- 23 Encontre a maior quantidade de um produto vendido em uma única transação.
+
+SELECT Id_Produto, MAX(Quantidade) AS MaisVendido
+FROM Pedidos
+GROUP BY Id_Produto;
+
+-- 24 Exiba o maior preço de produto por fornecedor.
+
+SELECT Fornecedor, MAX(Preco) AS ProdutoValor
+FROM Produtos
+GROUP BY Fornecedor;
+
+-- 25 Retorne a data mais recente de pedido por cliente.
+
+SELECT Id_Cliente, MAX(Data) AS PedidoRecente
+FROM Pedidos
+GROUP BY Id_Cliente;
+
+--  ----------------------------- Max ----------------------------------
+
+--  ----------------------------- Min ----------------------------------
+-- 26 Encontre o menor salário por cargo.
+
+SELECT Cargo, MIN(Salario) AS MenorSalario
+FROM Funcionarios
+GROUP BY Cargo;
+
+-- 27 Descubra o menor valor de venda por mês.
+
+SELECT MONTH(Data) AS Mes, MIN(Valor) AS MenorVenda
+FROM Pedidos
+GROUP BY MONTH(Data);
+
+-- 28 Encontre a menor quantidade de um produto vendido em uma única transação.
+
+SELECT Id_Produto, MIN(Quantidade) AS MenorQuantidade
+FROM Pedidos
+GROUP BY Id_Produto;
+
+-- 29 Exiba o menor preço de produto por categoria.
+
+SELECT Categoria, MIN(Preco) AS MenorPreco
+FROM Produtos
+GROUP BY Categoria;
+
+-- 30 Retorne a data mais antiga de pedido por região.
+
+SELECT Regiao, MIN(Data) AS PedidoAntigo
+FROM Pedidos
+GROUP BY Regiao;
+
+--  ----------------------------- Min ----------------------------------
+
+--  ----------------------------- Average ------------------------------
+-- 31 Calcule a média salarial por cargo.
+
+
+
+-- 32 Calcule o valor médio de vendas por cliente.
+
+
+
+-- 33 Calcule a quantidade média de produtos vendidos por pedido.
+
+
+
+-- 34 Calcule o preço médio de produtos por fornecedor.
+
+
+
+-- 35 Calcule a média de idade dos funcionários por departamento.
+
+
+
+--  ----------------------------- Average ------------------------------
+
 
 
 
