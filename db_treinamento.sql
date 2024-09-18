@@ -59,6 +59,14 @@ CREATE TABLE Despesas (
     Valor DECIMAL(10,2) NOT NULL,
     Data DATE NOT NULL
 );
+-- Tabela de Historico Salario
+CREATE TABLE HistoricoSalario (
+    Id_Historico INT PRIMARY KEY AUTO_INCREMENT,
+    Id_Funcionario INT NOT NULL,
+    Salario DECIMAL(10, 2) NOT NULL,
+    DataAlteracao DATE NOT NULL,
+    FOREIGN KEY (Id_Funcionario) REFERENCES Funcionarios(Id_Funcionario)
+);
 
 --  -------------------------TABELAS-----------------------------------
 
@@ -361,8 +369,85 @@ ORDER BY MaiorNumeroDeVendas DESC;
 
 --  ------------------------------ Top ---------------------------------
 
+--  ----------------------- Stored Procedure ---------------------------
 
+-- 41 Crie uma stored procedure que receba o ID de um cliente e retorne todas as vendas realizadas para esse cliente.
 
+GO
+CREATE PROCEDURE TodasVendas
+    @Id_Cliente INT
+AS
+BEGIN
+    SELECT *
+    FROM Pedidos
+    WHERE Id_Cliente = @Id_Cliente;
+END;
+GO
+
+EXEC TodasVendas @Id_Cliente = 1;
+
+-- 42 Crie uma stored procedure que receba o ID de um produto e retorne todas as informações desse produto.
+
+GO
+CREATE PROCEDURE InformaProduto
+    @Id_Produto INT
+AS
+BEGIN
+    SELECT *
+    FROM Produtos
+    WHERE Id_Produto = @Id_Produto;
+END;
+GO
+
+EXEC InformaProduto @Id_Produto = 1;
+    
+-- 43 Crie uma stored procedure que receba uma data e retorne todos os pedidos realizados naquela data.
+
+GO
+CREATE PROCEDURE PedidoPorData
+    @Data Date
+AS
+BEGIN
+    SELECT *
+    FROM Pedidos
+    WHERE Data = @Data;
+End;
+GO
+
+EXEC PedidoPorData @Data = '2024-09-18';
+
+-- 44 Crie uma stored procedure que receba o ID de um funcionário e retorne o histórico salarial desse funcionário.
+
+GO
+CREATE PROCEDURE SalarioFuncionario
+   @Id_Funcionario INT
+AS
+BEGIN
+    SELECT Salario, DataAlteracao
+    FROM HistoricoSalario
+    WHERE Id_Funcionario = @Id_Funcionario;
+    ORDER BY DataAlteracao DESC;
+END;
+GO
+
+EXEC SalarioFuncionario @Id_Funcionario = 1;
+
+-- 45 Crie uma stored procedure que receba o ID de um pedido e retorne todos os produtos associados a esse pedido.
+
+GO
+CREATE PROCEDURE ItensPedidos
+    @Id_Pedido
+AS
+BEGIN
+    SELECT Id_Produto, Nome
+    FROM Pedidos
+    WHERE Id_Pedido = Id_Pedido;
+END;
+GO
+
+EXEC ItensPedidos @Id_Pedido = 1;
+
+--  ----------------------- Stored Procedure ---------------------------
 
 
 
