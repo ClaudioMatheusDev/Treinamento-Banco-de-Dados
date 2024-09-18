@@ -67,6 +67,27 @@ CREATE TABLE HistoricoSalario (
     DataAlteracao DATE NOT NULL,
     FOREIGN KEY (Id_Funcionario) REFERENCES Funcionarios(Id_Funcionario)
 );
+-- Tabela de Alunos
+CREATE TABLE Alunos (
+    Id_Aluno INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(100) NOT NULL,
+    Data_Nascimento DATE NOT NULL
+);
+-- Tabela de Disciplinas
+CREATE TABLE Disciplinas (
+    Id_Disciplina INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(100) NOT NULL,
+    Creditos INT NOT NULL
+);
+-- Tabela de Matriculas
+CREATE TABLE Matriculas (
+    Id_Matricula INT PRIMARY KEY AUTO_INCREMENT,
+    Id_Aluno INT NOT NULL,
+    Id_Disciplina INT NOT NULL,
+    FOREIGN KEY (Id_Aluno) REFERENCES Alunos(Id_Aluno),
+    FOREIGN KEY (Id_Disciplina) REFERENCES Disciplinas(Id_Disciplina)
+);
+
 
 --  -------------------------TABELAS-----------------------------------
 
@@ -449,5 +470,84 @@ EXEC ItensPedidos @Id_Pedido = 1;
 
 --  ----------------------- Stored Procedure ---------------------------
 
+--  ---------------------------- Inner Join ----------------------------
+-- 1 Liste todos os clientes e os pedidos realizados por eles, utilizando um inner join.
+
+SELECT Cliente.Nome, Pedidos.Id_Pedido
+FROM Cliente
+INNER JOIN Pedidos
+ON Cliente.Id_Cliente = Pedidos.Id_Cliente;
+
+-- 2 Exiba todos os produtos e seus respectivos fornecedores, utilizando um inner join.
+
+SELECT Produtos.Nome, Produtos.Fornecedor
+FROM Produtos
+INNER JOIN Fornecedores
+ON Produtos.Fornecedor = Fornecedores.Nome;
+
+-- 3 Liste todos os funcionários e seus departamentos, utilizando um inner join.
+
+SELECT Funcionarios.Nome AS FuncionarioNome, Departamentos.Nome AS DepartamentoNome
+FROM Funcionarios
+INNER JOIN Departamentos
+ON Funcionarios.Departamento = Departamentos.Id_Departamento;
+
+-- 4  Liste todos os pedidos e os produtos associados a esses pedidos utilizando um inner join.
+
+SELECT Pedidos.Id_Pedido, Produtos.Nome AS ProdutoNome
+FROM Pedidos
+INNER JOIN Itens_Pedido ON Pedidos.Id_Pedido = Itens_Pedido.Id_Pedido
+INNER JOIN Produtos ON Itens_Pedido.Id_Produto = Produtos.Id_Produto;
+
+-- 5 Exiba todos os funcionários e os departamentos aos quais estão alocados utilizando um inner join.
+
+SELECT Funcionarios.Nome AS FuncionarioNome, Departamentos.Nome AS DepartamentoNome
+FROM Funcionarios
+INNER JOIN Departamentos ON Funcionarios.Id_Departamento = Departamentos.Id_Departamento;
+
+-- 6 Liste todos os clientes e os pedidos realizados por eles utilizando um inner join.
+
+SELECT Cliente.Nome AS ClienteNome, Pedidos.Id_Pedido
+FROM Cliente
+INNER JOIN Pedidos ON Cliente.Id_Cliente = Pedidos.Id_Cliente;
+
+-- 7 Liste todos os alunos e as disciplinas em que estão matriculados utilizando um inner join.
+
+SELECT Alunos.Nome AS AlunoNome, Disciplinas.Nome AS DisciplinaNome
+FROM Alunos
+INNER JOIN Matriculas ON Alunos.Id_Aluno = Matriculas.Id_Aluno
+INNER JOIN Disciplinas ON Matriculas.Id_Disciplina = Disciplinas.Id_Disciplina;
+
+--  ---------------------------- Inner Join ----------------------------
+
+--  ---------------------------- Left Join -----------------------------
+
+-- 1 Liste todos os clientes e, se houver, os pedidos realizados por eles, utilizando um left join.
+-- 2 Exiba todos os produtos e, se houver, os pedidos em que foram incluídos, utilizando um left join.
+-- 3 Liste todos os funcionários e, se houver, os projetos em que estão trabalhando utilizando um left join.
+-- 4 Exiba todos os fornecedores e, se houver, os produtos fornecidos por eles utilizando um left join.
+-- 5 Liste todos os cursos e, se houver, os alunos matriculados neles utilizando um left join.
+--  ---------------------------- Left Join -----------------------------
+
+
+--  --------------------------- Right Join -----------------------------
+
+-- 1 Exiba todos os pedidos e, se houver, os clientes que os realizaram utilizando um right join.
+-- 2 Liste todos os departamentos e, se houver, os funcionários alocados a eles utilizando um right join.
+-- 3 Exiba todas as vendas e, se houver, os produtos vendidos utilizando um right join.
+-- 4 Liste todos os professores e, se houver, as disciplinas que eles lecionam utilizando um right join.
+-- 5 Exiba todos os contratos e, se houver, as empresas contratadas utilizandoum right join.
+
+--  --------------------------- Right Join -----------------------------
+
+--  ----------------------- Full Outer Join ----------------------------
+
+-- 1 Liste todos os funcionários e todos os projetos, mesmo que não estejam associados, utilizando um full outer join.
+-- 2 Exiba todos os clientes e todos os pedidos, mesmo que não estejam relacionados, utilizando um full outer join.
+-- 3 Liste todos os produtos e todos os fornecedores, mesmo que não haja associação entre eles, utilizando um full outer join.
+-- 4 Exiba todas as turmas e todos os alunos, mesmo que não estejam associados, utilizando um full outer join.
+-- 5 Liste todos os vendedores e todas as vendas, mesmo que não estejam conectados, utilizando um full outer join.
+
+--  ----------------------- Full Outer Join ----------------------------
 
 
