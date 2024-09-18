@@ -29,13 +29,16 @@ CREATE TABLE Pedidos (
   Valor DECIMAL(10,2) NOT NULL,
   Status VARCHAR(100) NOT NULL,
   Quantidade INT NOT NULL,
-  Id_Cliente INT,
+  Id_Cliente INT NOT NULL,
+  Id_Funcionario INT NOT NULL,
+  FOREIGN KEY(Id_Funcionario) REFERENCES Funcionarios(Id_Funcionario),
   FOREIGN KEY(Id_Cliente) REFERENCES Clientes(Id_Cliente)
 );
 -- Tabela de Funcionarios
 CREATE TABLE Funcionarios (
  Id_Funcionario INT PRIMARY KEY AUTO_INCREMENT,	
  Nome VARCHAR(100) NOT NULL,
+ Idade INT NOT NULL,
  Salario DECIMAL(10,2) NOT NULL,
  Cargo Varchar(100) NOT NULL,
  Regiao VARCHAR(100) NOT NULL,
@@ -292,26 +295,71 @@ GROUP BY Regiao;
 --  ----------------------------- Average ------------------------------
 -- 31 Calcule a média salarial por cargo.
 
-
+SELECT Cargo, AVG(Salario) AS MediaSalario
+FROM Funcionarios
+GROUP BY Cargo;
 
 -- 32 Calcule o valor médio de vendas por cliente.
 
-
+SELECT Id_Cliente, AVG(Valor) AS MediaVenda
+FROM Pedidos
+GROUP BY Id_Cliente;
 
 -- 33 Calcule a quantidade média de produtos vendidos por pedido.
 
-
+SELECT Id_Produto, AVG(Quantidade) AS MediaProduto
+FROM Pedidos
+GROUP BY Id_Produto;
 
 -- 34 Calcule o preço médio de produtos por fornecedor.
 
-
+SELECT Fornecedor, AVG(Preco) AS MediaPreco
+FROM Produtos
+GROUP BY Fornecedor;
 
 -- 35 Calcule a média de idade dos funcionários por departamento.
 
-
+SELECT Departamento, AVG(Idade) AS MediaIdade
+FROM Funcionarios
+GROUP BY Departamento;
 
 --  ----------------------------- Average ------------------------------
 
+--  ------------------------------ Top ---------------------------------
+-- 36 Exiba os 5 produtos mais caros.
+
+SELECT TOP 5 Id_Produto, Preco
+FROM Produtos
+ORDER BY Preco DESC;
+
+-- 37 Liste os 3 clientes que mais compraram.
+
+SELECT TOP 3 Id_Cliente, COUNT(Id_Pedido) AS TotalCompras
+FROM Pedidos
+GROUP BY Id_Cliente
+ORDER BY TotalCompras DESC;
+
+-- 38 Exiba os 10 maiores pedidos em termos de valor total.
+
+SELECT TOP 10 Id_Pedido, Valor AS TotalValor
+FROM Pedidos
+ORDER BY Valor DESC;
+
+-- 39 Liste os 5 fornecedores com maior quantidade de produtos fornecidos.
+
+SELECT TOP 5 Fornecedor, SUM(Quantidade) AS TotalFornecido
+FROM Produtos
+GROUP BY Fornecedor
+ORDER BY TotalFornecido DESC;
+
+-- 40 Exiba os 3 funcionários com maior número de vendas.
+
+SELECT TOP 3 Id_Funcionario, COUNT(Id_Pedido) AS MaiorNumeroDeVendas
+FROM Pedidos
+GROUP BY Id_Funcionario
+ORDER BY MaiorNumeroDeVendas DESC;
+
+--  ------------------------------ Top ---------------------------------
 
 
 
