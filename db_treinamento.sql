@@ -9,6 +9,7 @@ CREATE TABLE Cliente (
     Id_Cliente INT PRIMARY KEY AUTO_INCREMENT,
     Nome VARCHAR(100) NOT NULL,
     Cidade VARCHAR(255) NOT NULL,
+    Pais VARCHAR(255) NOT NULL,
     Telefone VARCHAR(20) NOT NULL
 );
 -- Tabela de Produtos
@@ -33,6 +34,7 @@ CREATE TABLE Funcionarios (
  Id_Funcionario INT PRIMARY KEY AUTO_INCREMENT,	
  Nome VARCHAR(100) NOT NULL,
  Salario DECIMAL(10,2) NOT NULL,
+ Cargo Varchar(100) NOT NULL,
  Departamento VARCHAR(100) NOT NULL
 );
 -- Tabela de Pagamentos
@@ -175,3 +177,23 @@ WITH ProdutoMaisCaro AS (
 SELECT Id_Produto, Nome, Categoria, Preco
 FROM Produtos
 WHERE Categoria = (SELECT Categoria FROM ProdutoMaisCaro);
+
+-- 16 Agrupe os clientes por país e exiba apenas os países que possuem mais de 100 clientes.
+
+SELECT Pais, COUNT(*) AS NumeroClientes
+FROM Cliente
+GROUP BY Pais
+HAVING COUNT(*) > 100;
+
+-- 17 Agrupe os funcionários por cargo e exiba apenas os cargos que possuem mais de 5 funcionários.
+
+SELECT Cargo, COUNT(*) AS FuncionarioPorCargo
+From Funcionario
+GROUP BY Cargo
+HAVING COUNT(*) > 5;
+
+
+
+
+
+
