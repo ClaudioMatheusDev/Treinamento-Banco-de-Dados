@@ -523,20 +523,74 @@ INNER JOIN Disciplinas ON Matriculas.Id_Disciplina = Disciplinas.Id_Disciplina;
 --  ---------------------------- Left Join -----------------------------
 
 -- 1 Liste todos os clientes e, se houver, os pedidos realizados por eles, utilizando um left join.
+
+SELECT Cliente.Nome AS ClienteNome, Pedidos.Id_Pedido
+FROM Cliente
+LEFT JOIN Pedidos ON Cliente.Id_Cliente = Pedidos.Id_Cliente;
+
+
 -- 2 Exiba todos os produtos e, se houver, os pedidos em que foram incluídos, utilizando um left join.
+
+SELECT Produtos.Nome AS ProdutoNome, Pedidos.Id_Pedido
+FROM Produtos
+LEFT JOIN Itens_Pedido ON Produtos.Id_Produto = Itens_Pedido.Id_Produto
+LEFT JOIN Pedidos ON Itens_Pedido.Id_Pedido = Pedidos.Id_Pedido;
+
 -- 3 Liste todos os funcionários e, se houver, os projetos em que estão trabalhando utilizando um left join.
+
+SELECT Funcionarios.Nome AS FuncionarioNome, Projetos.Nome AS ProjetoNome
+FROM Funcionarios
+LEFT JOIN Projetos ON Funcionarios.Id_Funcionario = Projetos.Id_Funcionario;
+
+
 -- 4 Exiba todos os fornecedores e, se houver, os produtos fornecidos por eles utilizando um left join.
+
+SELECT Fornecedores.Nome AS FornecedorNome, Produtos.Nome AS ProdutoNome
+FROM Fornecedores
+LEFT JOIN Produtos ON Fornecedores.Nome = Produtos.Fornecedor; 
+
 -- 5 Liste todos os cursos e, se houver, os alunos matriculados neles utilizando um left join.
+
+SELECT Cursos.Nome AS CursoNome, Alunos.Nome AS AlunoNome
+FROM Cursos
+LEFT JOIN Matriculas ON Cursos.Id_Curso = Matriculas.Id_Curso
+LEFT JOIN Alunos ON Matriculas.Id_Aluno = Alunos.Id_Aluno;
+
+
 --  ---------------------------- Left Join -----------------------------
 
 
 --  --------------------------- Right Join -----------------------------
 
 -- 1 Exiba todos os pedidos e, se houver, os clientes que os realizaram utilizando um right join.
+
+SELECT Pedidos.Id_Pedido, Clientes.Nome AS ClienteNome
+FROM Pedidos
+RIGHT JOIN Clientes ON Pedidos.Id_Cliente = Clientes.Id_Cliente;
+
 -- 2 Liste todos os departamentos e, se houver, os funcionários alocados a eles utilizando um right join.
+
+SELECT Departamentos.Nome AS DepartamentoNome, Funcionarios.Nome AS FuncionarioNome
+FROM Departamentos
+RIGHT JOIN Funcionarios ON Departamentos.Id_Departamento = Funcionarios.Id_Departamento;
+
 -- 3 Exiba todas as vendas e, se houver, os produtos vendidos utilizando um right join.
+
+SELECT Vendas.Id_Venda, Produtos.Nome AS ProdutoNome
+FROM Vendas
+RIGHT JOIN Produtos ON Vendas.Id_Produto = Produtos.Id_Produto;
+
 -- 4 Liste todos os professores e, se houver, as disciplinas que eles lecionam utilizando um right join.
+
+SELECT Professores.Nome AS ProfessorNome, Disciplinas.Nome AS DisciplinaNome
+FROM Professores
+RIGHT JOIN Disciplinas ON Professores.Id_Professor = Disciplinas.Id_Professor;
+
 -- 5 Exiba todos os contratos e, se houver, as empresas contratadas utilizandoum right join.
+
+SELECT Contratos.Id_Contrato, Empresas.Nome AS EmpresaNome
+FROM Contratos
+RIGHT JOIN Empresas ON Contratos.Id_Empresa = Empresas.Id_Empresa;
 
 --  --------------------------- Right Join -----------------------------
 
